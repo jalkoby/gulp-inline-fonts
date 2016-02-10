@@ -14,8 +14,10 @@ var mimes = {
 
 module.exports = function (custom) {
   var fonts = [],
-    options = Object.assign({ name: 'font', style: 'normal', weight: 400, formats: ['woff', 'woff2'] }, custom),
+    options = { name: 'font', style: 'normal', weight: 400, formats: ['woff', 'woff2'] },
     output = null;
+
+  for(var attr in custom) { options[attr] = custom[attr] }
 
   function process(file) {
     var format = file.path.match(/\.(.+)$/)[1], mime = mimes[format];
@@ -45,7 +47,7 @@ module.exports = function (custom) {
         }
       }
     } else if(file.isStream()) {
-      this.emit('error', new PluginError('gulp-inline-fonts',  'Streaming not supported'));
+      this.emit('error', new PluginError('gulp-inline-fonts',  'Streaming is not supported'));
     }
 
     cb();
