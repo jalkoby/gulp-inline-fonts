@@ -1,0 +1,36 @@
+{
+  "name": "gulp-inline-fonts",
+  "version": "1.0.0",
+  "description": "Convert your fonts into css",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:jalkoby/gulp-inline-fonts.git"
+  },
+  "keywords": [
+    "gulp",
+    "font",
+    "css",
+    "base64",
+    "inline"
+  ],
+  "author": "Sergey Pchelintsev",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jalkoby/gulp-inline-fonts/issues"
+  },
+  "homepage": "https://github.com/jalkoby/gulp-inline-fonts",
+  "dependencies": {
+    "gulp-util": "^3.0.4",
+    "through2": "^0.6.3"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "mocha": "^2.4.5",
+    "should": "^8.2.1",
+    "stream-assert": "^2.0.3"
+  }
+}
