@@ -10,7 +10,9 @@ Install package with NPM and add it to your development dependencies:
 
 `npm i --save-dev gulp-inline-fonts`
 
-## Basic usage
+## Examples of usage
+
+### An icon font
 
 Let's suppose you have a custom icon font inside `assets/fonts/icons/` directory and want to include it inline into the stylesheets. To do it just add the follow into `gulpfile.js`:
 ```js
@@ -33,6 +35,47 @@ The plug-in will take supported formats(.woff & .woff2 by default), convert them
     src: local("icons"), url("data:application/font-woff;base64,...") format("woff"),
       url("data:application/font-woff2;base64,...") format("woff2");
   }
+```
+
+### A custom type font
+
+In contrast to the icon font example a custom type font frequently has a few weights and styles (normal, bold,
+italic & etc) like below:
+
+```bash
+$: ls src/fonts/thesans
+200.woff   # light
+200-i.woff # italic light
+400.woff   # normal
+400-i.woff # italic
+700.woff   # bold
+700-i.woff # italic bold
+```
+
+To compile them into a single css file add this code:
+
+```js
+var gulp = require('gulp'),
+  inline = require('gulp-inline-fonts'),
+  concat = require('gulp-concat'),
+  merge  = require('merge-stream');
+
+gulp.task('fonts', function() {
+  // create an accumulated stream
+  var fontStream = merge();
+
+  [200, 400, 700].forEach(function(weight) {
+    // a regular version
+    fontStream.add(gulp.src(`src/fonts/thesans/${weight}.woff`)
+                    .pipe(inline({ name: 'thesans', weight: weight, format: ['woff'] })));
+
+    // an italic version
+    fontStream.add(gulp.src(`src/fonts/thesans/${weight}-i.woff`)
+                    .pipe(inline({ name: 'thesans', weight: weight, format: ['woff'], style: 'italic' })));
+  });
+
+  return fontStream.pipe(concat('thesans.css')).pipe(gulp.dest('build'));
+});
 ```
 
 ## Default options
