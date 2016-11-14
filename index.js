@@ -1,6 +1,7 @@
 var through2 = require('through2'),
   gutil = require('gulp-util'),
   path = require('path'),
+  mime = require('mime'),
   PluginError = gutil.PluginError;
 
 var mimes = {
@@ -20,13 +21,15 @@ module.exports = function (custom) {
   for(var attr in custom) { options[attr] = custom[attr] }
 
   function process(file) {
-    var format = file.path.match(/\.(.+)$/)[1], mime = mimes[format];
-    if(!mime) return;
+    var mime_type = mime.lookup(file.path),
+        mime_ext = mime.extension(mime_type);
+
+    if(!mimes[mime_ext]) return;
 
     return {
-      format: format,
+      format: mime_ext,
       compile: function(name) {
-        return 'url("data:' + mime + ';base64,' + file.contents.toString('base64') + '") format("' + this.format + '")'
+        return 'url("data:' + mime_type + ';base64,' + file.contents.toString('base64') + '") format("' + this.format + '")'
       }
     }
   }
