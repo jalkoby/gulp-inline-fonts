@@ -33,7 +33,7 @@ describe('gulp-inline-fonts', function() {
         .pipe(assert.length(1))
         .pipe(is_equal('myfont', [
           '@font-face { font-family: "myfont"; font-style: italic; font-weight: 200; ',
-          'src: local("myfont"), url("data:application/x-font-truetype;base64,") format("ttf"); }'
+          'src: local("myfont"), url("data:application/x-font-ttf;base64,") format("ttf"); }'
         ]))
         .pipe(assert.end(done));
     });
