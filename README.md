@@ -1,6 +1,7 @@
 # gulp-inline-fonts
 
 [![Build Status](https://travis-ci.org/jalkoby/gulp-inline-fonts.svg?branch=master)](https://travis-ci.org/jalkoby/gulp-inline-fonts)
+[![npm version](https://badge.fury.io/js/gulp-inline-fonts.svg)](https://badge.fury.io/js/gulp-inline-fonts)
 
 The plug-in converts fonts into a standalone css file. The primary use-case is to make one file stylesheet when you have a custom fonts.
 
