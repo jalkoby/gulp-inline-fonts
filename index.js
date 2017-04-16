@@ -29,7 +29,9 @@ module.exports = function (custom) {
     return {
       format: mime_ext,
       compile: function(name) {
-        return 'url("data:' + mime_type + ';base64,' + file.contents.toString('base64') + '") format("' + this.format + '")'
+        var url = 'url("data:' + mime_type + ';base64,' + file.contents.toString('base64') + '")'
+        var format = this.format !== 'otf' ? ' format("' + this.format + '")' : ''
+        return url + format
       }
     }
   }
