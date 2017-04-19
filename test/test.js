@@ -28,12 +28,13 @@ describe('gulp-inline-fonts', function() {
     });
 
     it('allows to specify a custom options', function(done) {
-      gulp.src(fixtures('simple/myfont.ttf'))
-        .pipe(plugin({ formats: ['ttf'], name: 'myfont', weight: 200, style: 'italic' }))
+      gulp.src(fixtures('simple/myfont.*'))
+        .pipe(plugin({ formats: ['ttf', 'otf'], name: 'myfont', weight: 200, style: 'italic' }))
         .pipe(assert.length(1))
         .pipe(is_equal('myfont', [
           '@font-face { font-family: "myfont"; font-style: italic; font-weight: 200; ',
-          'src: local("myfont"), url("data:application/x-font-ttf;base64,") format("ttf"); }'
+          'src: url("data:font/opentype;base64,"); ',
+          'src: local("myfont"), url("data:application/x-font-ttf;base64,") format("truetype"); }'
         ]))
         .pipe(assert.end(done));
     });

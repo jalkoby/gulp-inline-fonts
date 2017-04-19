@@ -1,8 +1,8 @@
-var through2 = require('through2'),
-  gutil = require('gulp-util'),
-  path = require('path'),
-  mime = require('mime'),
-  PluginError = gutil.PluginError;
+var through2 = require('through2');
+var gutil = require('gulp-util');
+var path = require('path');
+var mime = require('mime');
+var PluginError = gutil.PluginError;
 
 var mimes = {
   woff:  'application/font-woff',
@@ -11,9 +11,14 @@ var mimes = {
   eot:   'application/vnd.ms-fontobject',
   otf:   'application/x-font-opentype',
   svg:   'image/svg+xml'
-}
+};
 
-module.exports = function (custom) {
+var cssFormats = {
+  ttf: 'truetype',
+  otf: false
+};
+
+module.exports = function(custom) {
   var fonts = [],
     options = { name: 'font', style: 'normal', weight: 400, formats: ['woff', 'woff2'] },
     output = null;
@@ -21,17 +26,20 @@ module.exports = function (custom) {
   for(var attr in custom) { options[attr] = custom[attr] }
 
   function process(file) {
-    var mime_type = mime.lookup(file.path),
-        mime_ext = mime.extension(mime_type);
+    var mime_type = mime.lookup(file.path);
+    var mime_ext = mime.extension(mime_type);
 
     if(!mimes[mime_ext]) return;
+    var cssFormat = cssFormats[mime_ext];
+    if(cssFormat === undefined) cssFormat = mime_ext;
+    if(cssFormat !== false) cssFormat = 'format("' + cssFormat + '")';
 
     return {
       format: mime_ext,
-      compile: function(name) {
-        var url = 'url("data:' + mime_type + ';base64,' + file.contents.toString('base64') + '")'
-        var format = this.format !== 'otf' ? ' format("' + this.format + '")' : ''
-        return url + format
+      cssFormat: cssFormat,
+      compile: function() {
+        return 'url("data:' + mime_type + ';base64,' + file.contents.toString('base64') + '")' +
+          (cssFormat ? ' ' + cssFormat : '');
       }
     }
   }
@@ -58,14 +66,19 @@ module.exports = function (custom) {
     cb();
   }
 
-  var flush = function (cb) {
+  var flush = function(cb) {
     // if there are no matched files
     if(!output) return cb();
+    var fontGroups = fonts.reduce(function(acc, font) {
+      acc[font.cssFormat ? 1 : 0].push(font);
+      return acc;
+    }, [[], []]);
     var content = '@font-face { ' +
       'font-family: "' + options.name + '"; ' +
       'font-style: ' + options.style + '; ' +
       'font-weight: ' + options.weight + '; ' +
-      'src: local("' + options.name + '"), ' + fonts.map(function(f) { return f.compile(options.name) }).join(', ') + '; ' +
+      fontGroups[0].map(function(f) { return 'src: ' + f.compile() + '; '}).join('') +
+      'src: local("' + options.name + '"), ' + fontGroups[1].map(function(f) { return f.compile() }).join(', ') + '; ' +
     '}';
     output.contents = new Buffer(content);
     this.push(output);
