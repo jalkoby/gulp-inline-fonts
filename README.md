@@ -68,11 +68,11 @@ gulp.task('fonts', function() {
   [200, 400, 700].forEach(function(weight) {
     // a regular version
     fontStream.add(gulp.src(`src/fonts/thesans/${weight}.woff`)
-                    .pipe(inline({ name: 'thesans', weight: weight, format: ['woff'] })));
+                    .pipe(inline({ name: 'thesans', weight: weight, formats: ['woff'] })));
 
     // an italic version
     fontStream.add(gulp.src(`src/fonts/thesans/${weight}-i.woff`)
-                    .pipe(inline({ name: 'thesans', weight: weight, format: ['woff'], style: 'italic' })));
+                    .pipe(inline({ name: 'thesans', weight: weight, formats: ['woff'], style: 'italic' })));
   });
 
   return fontStream.pipe(concat('thesans.css')).pipe(gulp.dest('build'));
