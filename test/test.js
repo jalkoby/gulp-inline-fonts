@@ -20,7 +20,7 @@ describe('gulp-inline-fonts', function() {
         .pipe(plugin())
         .pipe(assert.length(1))
         .pipe(is_equal('font', [
-          '@font-face { font-family: "font"; font-style: normal; font-weight: 400; ',
+          '@font-face { font-family: "font"; font-style: normal; font-stretch: normal; font-weight: 400; ',
           'src: local("font"), url("data:application/font-woff;base64,") format("woff"), ',
             'url("data:application/font-woff2;base64,") format("woff2"); }'
         ]))
@@ -32,7 +32,7 @@ describe('gulp-inline-fonts', function() {
         .pipe(plugin({ formats: ['ttf', 'otf'], name: 'myfont', weight: 200, style: 'italic' }))
         .pipe(assert.length(1))
         .pipe(is_equal('myfont', [
-          '@font-face { font-family: "myfont"; font-style: italic; font-weight: 200; ',
+          '@font-face { font-family: "myfont"; font-style: italic; font-stretch: normal; font-weight: 200; ',
           'src: url("data:font/opentype;base64,"); ',
           'src: local("myfont"), url("data:application/x-font-ttf;base64,") format("truetype"); }'
         ]))
