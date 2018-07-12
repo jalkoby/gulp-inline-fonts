@@ -32,6 +32,7 @@ The plug-in will take supported formats(.woff & .woff2 by default), convert them
   @font-face {
     font-family: "icons";
     font-style: normal;
+    font-stretch: normal;
     font-weight: 400;
     src: local("icons"), url("data:application/font-woff;base64,...") format("woff"),
       url("data:application/font-woff2;base64,...") format("woff2");
@@ -84,6 +85,7 @@ gulp.task('fonts', function() {
 {
   name: 'font',
   style: 'normal',
+  stretch: 'normal',
   weight: 400,
   formats: ['woff', 'woff2'] // also supported: 'ttf', 'eot', 'otf', 'svg'
 }
