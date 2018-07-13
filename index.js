@@ -20,7 +20,7 @@ var cssFormats = {
 
 module.exports = function(custom) {
   var fonts = [],
-    options = { name: 'font', style: 'normal', weight: 400, formats: ['woff', 'woff2'] },
+    options = { name: 'font', style: 'normal', weight: 400, formats: ['woff', 'woff2'], stretch: 'normal' },
     output = null;
 
   for(var attr in custom) { options[attr] = custom[attr] }
@@ -76,6 +76,7 @@ module.exports = function(custom) {
     var content = '@font-face { ' +
       'font-family: "' + options.name + '"; ' +
       'font-style: ' + options.style + '; ' +
+      'font-stretch: ' + options.stretch + '; ' +
       'font-weight: ' + options.weight + '; ' +
       fontGroups[0].map(function(f) { return 'src: ' + f.compile() + '; '}).join('') +
       'src: local("' + options.name + '"), ' + fontGroups[1].map(function(f) { return f.compile() }).join(', ') + '; ' +
