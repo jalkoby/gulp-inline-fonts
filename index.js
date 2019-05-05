@@ -1,8 +1,8 @@
 var through2 = require('through2');
-var gutil = require('gulp-util');
 var path = require('path');
 var mime = require('mime');
-var PluginError = gutil.PluginError;
+var Vinyl = require('vinyl');
+var PluginError = require('plugin-error');
 
 var mimes = {
   woff:  'application/font-woff',
@@ -52,7 +52,7 @@ module.exports = function(custom) {
         fonts.push(font);
 
         if(!output) {
-          output = new gutil.File({
+          output = new Vinyl({
             cwd:  file.cwd,
             base: file.base,
             path: path.join(file.base, options.name + '.css')
