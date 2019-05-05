@@ -73,12 +73,12 @@ module.exports = function(custom) {
       acc[font.cssFormat ? 1 : 0].push(font);
       return acc;
     }, [[], []]);
-    var content = '@font-face { ' +  
+    var content = '@font-face { ' +
       'font-family: "' + options.name + '"; ' +
       'font-style: ' + options.style + '; ' +
       'font-stretch: ' + options.stretch + '; ' +
       'font-weight: ' + options.weight + '; ' +
-      'font-display: ' + options.display + '; ' + 
+      'font-display: ' + options.display + '; ' +
       fontGroups[0].map(function(f) { return 'src: ' + f.compile() + '; '}).join('') +
       'src: local("' + options.name + '"), ' + fontGroups[1].map(function(f) { return f.compile() }).join(', ') + '; ' +
     '}';
